@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { GlobalStyles } from './styled-components/GlobalStyles';
+import { GridMovieListing } from './styled-components/movieListing';
 import MovieListing from './components/MovieListing';
-import SearchResults from './components/SearchResults';
 
 const SiteHeader = styled.header`
   border-bottom: 1px solid #CCC;
@@ -28,13 +28,47 @@ class App extends React.Component {
     this.state = {
       searching: false,
       searchTerm: '',
+      error: null,
+      isLoaded: false,
+      results: [],
     };
 
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetchSearchResults = this.fetchSearchResults.bind(this);
   }
 
-  handleSearch(event) {
+
+  fetchSearchResults(query) {
+    fetch('https://wookie.codesubmit.io/movies?q=' + query, {
+        method: 'get',
+        headers: new Headers({
+            'Authorization': 'Bearer Wookie2019'
+        })
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          isLoaded: true,
+          results: result.movies
+        });
+        console.log('result: '+result);
+        console.log('query: '+query);
+      },
+      (error) => {
+        this.setState({
+          isLoaded: true,
+          error
+        });
+      }
+    )
+  }
+
+
+  handleSearch = async (event) => {
+    const { searchTerm } = this.state;
+
     const userInput = event.target.value;
     console.log('userInput: '+userInput);
     if(userInput) {   // if the search value isn't empty
@@ -48,17 +82,17 @@ class App extends React.Component {
         searchTerm: '',
       });
     }
+    this.fetchSearchResults(searchTerm);
     this.forceUpdate();
-
   }
 
   handleSubmit(event) {
-    this.handleSearch(event);
     event.preventDefault();
+    this.handleSearch(event);
   }
 
   render() {
-    const { searching, searchTerm } = this.state;
+    const { results, searching, searchTerm } = this.state;
 
     return (
       <>
@@ -69,7 +103,7 @@ class App extends React.Component {
             <input
               id="search"
               name="search"
-              onChange={this.handleSearch}
+              onChange={e => this.handleSearch(e)}
               type="text"
               value={searchTerm}
             />
@@ -79,10 +113,16 @@ class App extends React.Component {
           {!searching && (
             <MovieListing />
           )}
-          {searching && (
+          {searching && results && (
             <div>
               <p>Results for '{searchTerm}'</p>
-              <SearchResults query={searchTerm} />
+              <GridMovieListing>
+                {results.map(movie => (
+                  <li key={movie.id}>
+                    <img src={movie.poster} alt={movie.title}/>
+                  </li>
+                ))}
+              </GridMovieListing>
             </div>
           )}
         </main>

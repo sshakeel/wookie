@@ -93,9 +93,8 @@ export const GlobalStyles = createGlobalStyle`
     }
     section {
         margin-bottom: 30px;
-        /* padding: 20px; */
     }
     p {
-        margin-bottom: 20px;
+        padding-bottom: 20px;
     }
 `;
