@@ -64,8 +64,11 @@ export const GlobalStyles = createGlobalStyle`
     body {
         color: #333;
         font-family: 'Raleway', sans-serif;
-        font-size: 18px;
+        font-size: 16px;
+        font-weight: 400;
         letter-spacing: 0.5px;
+        line-height: 1.4;
+
     }
     h1 {
         letter-spacing: -1.5px;
@@ -79,7 +82,8 @@ export const GlobalStyles = createGlobalStyle`
     }
     h3 {
         letter-spacing: 0;
-        font-size: 18px;
+        font-size: 24px;
+        font-weight: bold;
     }
     strong {
         font-weight: bold;
@@ -95,6 +99,8 @@ export const GlobalStyles = createGlobalStyle`
         margin-bottom: 30px;
     }
     p {
+        font-size: 18px;
+        font-weight: 500;
         padding-bottom: 20px;
     }
 `;
