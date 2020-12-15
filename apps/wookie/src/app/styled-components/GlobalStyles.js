@@ -62,32 +62,40 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     body {
+        color: #333;
         font-family: 'Raleway', sans-serif;
-        font-size: 16px;
+        font-size: 18px;
         letter-spacing: 0.5px;
     }
     h1 {
         letter-spacing: -1.5px;
-        font-size: 60px;
+        font-size: 48px;
         font-weight: 300;
     }
     h2 {
         letter-spacing: -0.5px;
-        font-size: 36px;
-        font-weight: 300;
+        font-size: 28px;
+        font-weight: bold;
     }
     h3 {
         letter-spacing: 0;
-        font-size: 28px;
+        font-size: 18px;
     }
     strong {
         font-weight: bold;
     }
     header {
-        padding: 40px 20px;
         margin-bottom: 40px;
+        padding: 40px 20px;
+    }
+    main {
+        padding: 20px;
     }
     section {
-        padding: 20px;
+        margin-bottom: 30px;
+        /* padding: 20px; */
+    }
+    p {
+        margin-bottom: 20px;
     }
 `;

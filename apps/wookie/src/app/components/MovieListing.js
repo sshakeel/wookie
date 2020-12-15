@@ -1,26 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { HorizontalMovieListing } from '../styled-components/movieListing';
+
 const MovieSection = styled.section`
   h2 {
-    margin-bottom: 20px;
-  }
-`;
-
-const HorizontalMovieListing = styled.ul`
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  li {
-    display: inline-block;
-    margin-right: 20px;
-    &::last-child {
-      margin-right: 0;
-    }
-    img {
-      border-radius: 15px;
-      height: 250px;
-    }
+    margin-bottom: 10px;
   }
 `;
 
@@ -68,7 +53,7 @@ class MovieListing extends React.Component {
       if(movie.genres.includes(category)) {
         movieMarkup.push(
           <li key={movie.id}>
-            <img src={movie.poster} />
+            <img src={movie.poster} alt={movie.title}/>
           </li>
         );
       }
