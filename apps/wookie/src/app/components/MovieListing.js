@@ -9,16 +9,26 @@ const MovieSection = styled.section`
   }
 `;
 
+const MovieDetails = styled.div`
+  display: ${props => props.visible ? 'block' : 'none'};
+  img {
+    max-width: 500px;
+  }
+`;
+
 class MovieListing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       error: null,
       isLoaded: false,
-      movies: []
+      movies: [],
+      detailsVisible: false,
+      currentMovie: {},
     };
 
     this.listMovieFromCategory = this.listMovieFromCategory.bind(this);
+    this.displayDetails = this.displayDetails.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +55,25 @@ class MovieListing extends React.Component {
     )
   }
 
+  displayDetails(movie) {
+    const { detailsVisible } = this.state;
+
+    if(!detailsVisible) {
+      this.setState({
+        currentMovie: movie,
+        detailsVisible: true,
+      });
+    }
+    // this.renderMovieDetails(movie);
+  }
+
+  hideDetails() {
+    this.setState({
+      currentMovie: {},
+      detailsVisible: false,
+    })
+  }
+
   listMovieFromCategory(category) {
     const { movies } = this.state;
     let movieMarkup = [];
@@ -52,7 +81,7 @@ class MovieListing extends React.Component {
     movies.map(movie => {
       if(movie.genres.includes(category)) {
         movieMarkup.push(
-          <li key={movie.id}>
+          <li key={movie.id} onClick={()=>this.displayDetails(movie)}>
             <img src={movie.poster} alt={movie.title}/>
           </li>
         );
@@ -63,7 +92,7 @@ class MovieListing extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, movies } = this.state;
+    const { currentMovie, detailsVisible, error, isLoaded, movies } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -79,14 +108,20 @@ class MovieListing extends React.Component {
         })
       })
       return (
-        categories.map(category => (
-          <MovieSection>
-            <h2>{category}</h2>
-            <HorizontalMovieListing>
-              {this.listMovieFromCategory(category)}
-            </HorizontalMovieListing>
-          </MovieSection>
-        ))
+        <div>
+          <MovieDetails visible={detailsVisible} >
+            <img src={currentMovie.backdrop} alt={currentMovie.title} onClick={()=>this.hideDetails}/>
+          </MovieDetails>
+          {categories.map(category => (
+            <MovieSection>
+              <h2>{category}</h2>
+              <HorizontalMovieListing>
+                {this.listMovieFromCategory(category)}
+              </HorizontalMovieListing>
+            </MovieSection>
+          ))}
+        </div>
+       
       )
     }
   }
